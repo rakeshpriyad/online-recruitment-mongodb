@@ -1,0 +1,48 @@
+        <div class="data-btn">
+          <button> Candidate Information</button>
+         </div>
+         <div class="data-table">
+         
+            <table border="1" cellpadding="7" cellspacing="7">
+                <tr>
+                    <th width="50px">No</th>
+					<th width="50px">ID</th>
+                    <th>Company Name</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Contact Person</th>
+                    <th width="120px">Action</th>
+                </tr>
+                               
+                <% if(candidates_data.length){ 
+                                
+                 for(var i = 0;i < candidates_data.length;i++) { %>
+                 
+                <tr>
+                    <td><%=(i+1)%></td>
+					<td></td>
+                    <td><%=candidates_data[i].company_name%></td>
+                    <td><%=candidates_data[i].address%></td>
+                    <td><%=candidates_data[i].phone%></td>
+                    <td><%=candidates_data[i].email%></td>
+                    <td><%=candidates_data[i].contact_person%></td>
+                    <td>
+                        <a class="a-inside edit" href="../candidates/edit/<%=candidates_data[i]._id%>">Edit</a>
+                       
+                        <a class="a-inside delete" href="../candidates/delete/<%=candidates_data[i]._id%>">Delete</a>
+                       
+                    </td>
+                </tr>
+            <% }
+            
+             }else{ %>
+                 <tr>
+                    <td colspan="3">No Candidate</td>
+                 </tr>
+            <% } %>
+                
+                              
+                
+            </table>
+         </div>
