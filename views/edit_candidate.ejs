@@ -1,22 +1,22 @@
 <%- include layouts/header.ejs %>
 
         <div class="page-data">
-            <form method="post" action="/companies/edit/<%=company._id%>">
+            <form method="post" action="/candidates/edit/<%=candidate._id%>">
                 <table cellpadding="11">
                 <tr>
-                    <td class="label">Name</td><td>: <input type="text" name="name" value="<%=company.name%>" required></td>
+                    <td class="label">Name</td><td>: <input type="text" name="candidate_name" value="<%=candidate.candidate_name%>" required></td>
                  </tr>
                  <tr>
                     <td class="label" valign="top">Address</td>
                     <td valign="top">: 
-                        <textarea name="address" required cols="30" rows="5"><%=company.address%></textarea>
+                        <textarea name="address" required cols="30" rows="5"><%=candidate.address%></textarea>
                     </td>
                 </tr>
                 <tr>
-                    <td class="label">Email</td><td>: <input type="text" value="<%=company.email%>" name="email" required></td>
+                    <td class="label">Email</td><td>: <input type="text" value="<%=candidate.email%>" name="email" required></td>
                  </tr>
                   <tr>
-                    <td class="label">Phone</td><td>: <input type="text" name="phone" value="<%=company.phone%>" required></td>
+                    <td class="label">Phone</td><td>: <input type="text" name="phone" value="<%=candidate.phone%>" required></td>
                  </tr>
                  <tr>
                     <td class="label"></td>

@@ -11,6 +11,7 @@ var path = require('path');
 //load companies route
 var companies = require('./routes/companies');
 var candidates = require('./routes/candidates');
+var schedules = require('./routes/schedules');
 var app = express();
 
 
@@ -57,6 +58,16 @@ app.get('/candidates/get/:id', candidates.get);
 app.get('/candidates', candidates.list);
 app.post('/candidates/edit/:id',candidates.save_edit);
 app.get('/candidates/delete/:id', candidates.delete_candidate);
+app.get('/candidates/upload', candidates.upload);
+app.post('/candidates/upload', candidates.cv_upload);
+
+app.get('/schedules', schedules.list);
+app.get('/schedules/add', schedules.add);
+app.post('/schedules/add', schedules.save);
+app.get('/schedules/edit/:id', schedules.edit);
+
+
+
 
 
 app.use(app.router);

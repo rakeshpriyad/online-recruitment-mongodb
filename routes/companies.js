@@ -18,10 +18,10 @@ exports.list = function(req, res){
 	//var candidatedata;
 	companyProvider.fetchAllCompanies(function(error, companies) {
 			
-			companyProvider.fetchAllCandidates(function(error, candiates) {
-			res.render('companies',{page_title:"Companies ",data:companies,candidates_data:candiates});
+			//companyProvider.fetchAllCandidates(function(error, candiates) {
+			res.render('companies',{page_title:"Companies ",data:companies});
 			//res.send(candiates);
-			});
+			//});
 	});
 
 	

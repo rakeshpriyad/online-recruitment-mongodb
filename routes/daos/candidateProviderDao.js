@@ -68,7 +68,7 @@ CandidateProvider = function(host, port) {
 				cb(error, null);
 			} else {
 				candidates.update({_id:candidates.db.bson_serializer.ObjectID.createFromHexString(candidate._id)},
-					{name:candidate.name, address:candidate.address, email:candidate.email},
+					{candidate_name:candidate.candidate_name, address:candidate.address, email:candidate.email,phone:candidate.phone},
 					function(error, result) {
 						cb(error, result);
 				});
