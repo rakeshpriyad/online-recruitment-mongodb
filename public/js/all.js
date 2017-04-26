@@ -1,3 +1,6 @@
+function cvUpload(){
+window.location.href = '/candidates/upload';
+}
 function visitClient(){
             
     window.location.href = '/companies/';

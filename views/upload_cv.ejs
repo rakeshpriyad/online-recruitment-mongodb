@@ -1,7 +1,12 @@
 <%- include layouts/header.ejs %>
 
         <div class="page-data">
-            
+            <% 
+			if ( typeof message !== 'undefined' && message )  { %>
+			File uploaded successfully
+			<% } %> 
+			
+			
             <form ref='uploadForm' 
       id='uploadForm' 
       action='/candidates/upload' 

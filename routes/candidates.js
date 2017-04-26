@@ -122,7 +122,10 @@ exports.cv_upload = function(req, res){
         console.log('Uploaded ' + file.name);
     });
 
+	
     //res.sendfile('./public/upload_cv.html');
-	res.redirect('/candidates');
+	//res.status(200).redirect('/candidates',{code: 'success', message:'Valid'});
+	//res.status(200).send({code: 'success', message:'Uploaded'});
+	res.render('upload_cv',{page_title:"candidates File Upload ",message:'Uploaded'});
 };
 
