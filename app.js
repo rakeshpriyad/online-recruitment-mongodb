@@ -12,6 +12,7 @@ var path = require('path');
 var companies = require('./routes/companies');
 var candidates = require('./routes/candidates');
 var schedules = require('./routes/schedules');
+const fs = require('fs');
 var app = express();
 
 
@@ -31,6 +32,31 @@ app.use(express.static(path.join(__dirname, 'public')));
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
+
+//var fileUpload = require('express-fileupload');
+/*var formidable = require('formidable');
+
+app.get('/candidates/upload', function (req, res){
+    res.sendfile('./public/upload_cv.html');
+});
+
+app.post('/candidates/upload', function (req, res){
+    var form = new formidable.IncomingForm();
+
+    form.parse(req);
+
+    form.on('fileBegin', function (name, file){
+        file.path = __dirname + '/uploads/' + file.name;
+    });
+
+    form.on('file', function (name, file){
+        console.log('Uploaded ' + file.name);
+    });
+
+    res.sendfile('./public/upload_cv.html');
+});
+*
+
 
 /*------------------------------------------
     connection peer, register as middleware

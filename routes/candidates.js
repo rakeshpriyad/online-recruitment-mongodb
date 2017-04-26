@@ -1,7 +1,9 @@
 
 
-const expressFileUpload = require('express-fileupload');
-var fileUpload = expressFileUpload();
+//const expressFileUpload = require('express-fileupload');
+//var fileUpload = expressFileUpload();
+var formidable = require('formidable');
+
 
 function getCandidateProvider(){
 	var mongoServer = 'localhost';
@@ -108,20 +110,19 @@ exports.upload = function(req, res){
 
 
 exports.cv_upload = function(req, res){
-	console.log(req.files);
-  if (!req.files)
-  
-    return res.status(400).send('No files were uploaded.');
- 
-  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file 
-  let sampleFile = req.files.sampleFile;
- 
-  // Use the mv() method to place the file somewhere on your server 
-  sampleFile.mv('G:/node-js/online-recruitment/req-img/test.png', function(err) {
-    if (err)
-      return res.status(500).send(err);
- 
-    res.send('File uploaded!');
-  });
+ var form = new formidable.IncomingForm();
+
+    form.parse(req);
+
+    form.on('fileBegin', function (name, file){
+        file.path = __dirname + '/uploads/' + file.name;
+    });
+
+    form.on('file', function (name, file){
+        console.log('Uploaded ' + file.name);
+    });
+
+    //res.sendfile('./public/upload_cv.html');
+	res.redirect('/candidates');
 };
 
