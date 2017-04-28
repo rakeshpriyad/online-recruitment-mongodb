@@ -1,7 +1,7 @@
-<div class="data-btn">
-           <button>Client Information</button>
-         </div>
-        
+
+<div>
+  
+</div>
          <div class="data-table">
             <table border="1" cellpadding="7" cellspacing="7">
                 <tr>
@@ -14,11 +14,11 @@
                     <th>Contact Person</th>
                     <th width="120px">Action</th>
                 </tr>
-                               
-                <% if(data.length){ 
-                                
+
+                <% if(data.length){
+
                  for(var i = 0;i < data.length;i++) { %>
-                 
+
                 <tr>
                     <td><%=(i+1)%></td>
 					<td><%=data[i]._id%></td>
@@ -29,20 +29,20 @@
                     <td><%=data[i].contact_person%></td>
                     <td>
                         <a class="a-inside edit" href="../companies/edit/<%=data[i]._id%>">Edit</a>
-                       
+
                         <a class="a-inside delete" href="../companies/delete/<%=data[i]._id%>">Delete</a>
-                       
+
                     </td>
                 </tr>
             <% }
-            
+
              }else{ %>
                  <tr>
                     <td colspan="3">No Client</td>
                  </tr>
             <% } %>
-                
-                              
-                
+
+
+
             </table>
          </div>

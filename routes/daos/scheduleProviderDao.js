@@ -3,13 +3,32 @@ var schedulesTable = 'schedules';
 var Db = require('mongodb').Db;
 var Connection = require('mongodb').Connection;
 var Server = require('mongodb').Server;
+var pageSize = 3;
+var skipSize = 0;
 
 ScheduleProvider = function(host, port) {
 
 	this.db = new Db('schedules', new Server(host, port));
 	this.db.open(function(){});
 
-	this.fetchAllSchedules = function(cb) {
+	this.fetchAllSchedules = function(page,cb) {
+		skipSize =0;
+		if(page > 1){
+				skipSize= pageSize*(page-1);
+		}
+		this.db.collection(schedulesTable, function(error, schedules) {
+			if (error) {
+				cb(error, null);
+			} else {
+				schedules.find().skip(skipSize).limit(pageSize).toArray(function(error, results) {
+					cb(error, results);
+				});
+			}
+		});
+	};
+
+	this.fetchTotalSchedules = function(cb) {
+		
 		this.db.collection(schedulesTable, function(error, schedules) {
 			if (error) {
 				cb(error, null);
@@ -31,6 +50,25 @@ ScheduleProvider = function(host, port) {
 				}, function(error, result) {
 					cb(error, result);
 				});
+			}
+		});
+	};
+
+	this.fetchScheduleByName = function(schedule_name,page, cb) {
+
+		
+		if(page > 1){
+			skipSize= pageSize*(page-1);
+		}
+		this.db.collection(schedulesTable, function(error, candidates) {
+			if (error) {
+				cb(error, null);
+			} else {
+
+				candidates.find({"schedule_name":schedule_name}).skip(skipSize).limit(pageSize).toArray(function(error, results) {
+					cb(error, results);
+				});
+
 			}
 		});
 	};

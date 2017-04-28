@@ -4,30 +4,26 @@ var Db = require('mongodb').Db;
 var Connection = require('mongodb').Connection;
 var Server = require('mongodb').Server;
 
+var pageSize = 3;
+var skipSize = 0;
+
 CandidateProvider = function(host, port) {
 
 	this.db = new Db('candidates', new Server(host, port));
 	this.db.open(function(){});
-	//this.db = new Db('companies', new Server(host, port));
-	//this.db.open(function(){});
-	this.fetchAllCompanies = function(cb) {
-		this.db.collection("companies", function(error, companies) {
-			if (error) {
-				cb(error, null);
-			} else {
-				companies.find().toArray(function(error, results) {
-					cb(error, results);
-				});
-			}
-		});
-	};
 
-	this.fetchAllCandidates = function(cb) {
+
+	this.fetchAllCandidates = function(page,cb) {
+
+		skipSize =0;
+		if(page > 1){
+			skipSize= pageSize*(page-1);
+		}
 		this.db.collection(candidatesTable, function(error, candidates) {
 			if (error) {
 				cb(error, null);
 			} else {
-				candidates.find().toArray(function(error, results) {
+				candidates.find().skip(skipSize).limit(pageSize).toArray(function(error, results) {
 					cb(error, results);
 				});
 			}
@@ -44,6 +40,25 @@ CandidateProvider = function(host, port) {
 				}, function(error, result) {
 					cb(error, result);
 				});
+			}
+		});
+	};
+
+	this.fetchCandidateByName = function(candidate_name,page, cb) {
+
+		
+		if(page > 1){
+			skipSize= pageSize*(page-1);
+		}
+		this.db.collection(candidatesTable, function(error, candidates) {
+			if (error) {
+				cb(error, null);
+			} else {
+
+				candidates.find({"candidate_name":candidate_name}).skip(skipSize).limit(pageSize).toArray(function(error, results) {
+					cb(error, results);
+				});
+
 			}
 		});
 	};

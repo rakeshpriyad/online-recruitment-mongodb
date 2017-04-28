@@ -1,11 +1,24 @@
 <%- include layouts/header.ejs %>
 
         <div class="page-data">
-         <div class="data-btn">
-           <button onClick="addCompany();">+ Add Client</button><button onClick="addShedule();">+ Add Schedule</button>
-         </div>
+          <div class="search-info-btn">
+            <div class="data-btn">
+                <table border="0" width="100%">
+                  <tr>
+                    <td width="40%"><button onClick="addCompany();">+ Add Client</button><button onClick="addShedule();">+ Add Schedule</button></td>
+                    <td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td width="10%">&nbsp;</td>
+                    <td width="50%" align="right">
+                    <form method="POST" action="/companies/find">Client Name <input type="text" name="company_name" >  <input type="submit" value="Search"/> </form>
+                    </td>
+                  </tr>
+                </table>
+            </div>
+          </div>
          <%- include comp_info.ejs %>
-         
+         <%- include company_paginate.ejs %>
         
         </div>
         

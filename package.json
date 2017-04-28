@@ -6,6 +6,7 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "bson": "^1.0.4",
     "ejs": "^1.0.0",
     "express": "3.5.1",

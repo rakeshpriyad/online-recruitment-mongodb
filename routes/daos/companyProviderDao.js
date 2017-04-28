@@ -3,21 +3,38 @@ var companiesTable = 'companies';
 var Db = require('mongodb').Db;
 var Connection = require('mongodb').Connection;
 var Server = require('mongodb').Server;
+var pageSize = 3;
+var skipSize = 0;
 
 CompanyProvider = function(host, port) {
 
 	this.db = new Db('companies', new Server(host, port));
 	this.db.open(function(){});
 
-	this.dbCandidate = new Db('candidates', new Server(host, port));
-	this.dbCandidate.open(function(){});
-
-	this.fetchAllCompanies = function(cb) {
+	
+	this.fetchTotalCompanies = function(cb) {
+		
 		this.db.collection(companiesTable, function(error, companies) {
 			if (error) {
 				cb(error, null);
 			} else {
 				companies.find().toArray(function(error, results) {
+					cb(error, results);
+				});
+			}
+		});
+	};
+
+	this.fetchAllCompanies = function(page,cb) {
+		skipSize =0;
+		if(page > 1){
+				skipSize= pageSize*(page-1);
+		}
+		this.db.collection(companiesTable, function(error, companies) {
+			if (error) {
+				cb(error, null);
+			} else {
+				companies.find().skip(skipSize).limit(pageSize).toArray(function(error, results) {
 					cb(error, results);
 				});
 			}
@@ -49,6 +66,26 @@ CompanyProvider = function(host, port) {
 			}
 		});
 	};
+
+	this.fetchCompanyByName = function(company_name,page, cb) {
+
+		
+		if(page > 1){
+			skipSize= pageSize*(page-1);
+		}
+		this.db.collection(companiesTable, function(error, candidates) {
+			if (error) {
+				cb(error, null);
+			} else {
+
+				candidates.find({"company_name":company_name}).skip(skipSize).limit(pageSize).toArray(function(error, results) {
+					cb(error, results);
+				});
+
+			}
+		});
+	};
+
 
 	this.insertCompany = function(company, cb) {
 		console.log('inserting company: ' + company);

@@ -1,0 +1,44 @@
+<div class="pagination-middle">            
+
+            <% if ( typeof pageCount !== 'undefined' && pageCount )  { %>
+            <% if (pageCount > 1) { %>
+      <ul class="pagination">
+          <% if (currentPage > 1) { %>
+                <% if ( typeof cand_name == 'undefined')  {%>
+                    <a href="/candidates/">&laquo;</a>
+                <% }else { %>
+                    <a href="/candidates/find/1/<%= cand_name %>">&laquo;</a>
+               <% } %>
+          <% } %>
+          <% var i = 1;
+          if (currentPage > 5) {
+              i = +currentPage - 4;
+          } %>
+          <% if (i !== 1) { %>
+              <a href="#">...</a>
+          <% } %>
+          <% for (i; i<=pageCount; i++) { %>
+              <% if (currentPage == i) { %>
+                  <a class="active" href="#"><%= i %></a>
+              <% } else { %>
+                    <% if ( typeof cand_name == 'undefined')  {%>
+                     <a href="/candidates/<%= i %>"><%= i %></a>
+                    <% }else { %>
+                        <a href="/candidates/find/<%= i %>/<%= cand_name %>"><%= i %></a>
+                    <% } %>
+              <% } %>
+              <% if (i == (+currentPage + 4)) { %>
+                  <a href="#">...</a>
+              <% break; } %>
+          <% } %>
+           <% if ( typeof cand_name == 'undefined')  {%>
+                <a href="/candidates/<%= pageCount %>">&raquo;</a>
+           <% }else { %>
+                <a href="/candidates/find/<%= pageCount %>/<%= cand_name %>">&raquo;</a>
+           <% } %>
+          
+         
+      </ul>
+  <% } %>
+  <% } %>
+</div>

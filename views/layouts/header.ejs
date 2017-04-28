@@ -2,13 +2,21 @@
 </html>
     <head>
         <title>Online Recruitment System</title>
+        
+        
         <link href="/../css/style.css" rel="stylesheet">
+        <script src="/../js/jquery-3.2.1.min.js"></script>
+        <script src="/../js/bootstrap.min.js"></script>
         <script type="text/javascript" src="/../js/all.js"></script>
     </head>
     <body>
-         
+
         <div id="wrapper">
-            <%- include menu.ejs %>
-            <div class="page-header"><div style="background-image:url('http://intellizonesoftware.in/intellizone/images/banner03.jpg');"></div><h2>Online Recruitment System</h2></div>
-            <div class="page-header"><h2><%=page_title%></h2></div>
+            
             <div class="page-container">
+                <%- include menu.ejs %>
+            <div class="page-header bg-img" ><h2>Online Recruitment System</h2></div>
+            
+            <div class="data-header-btn">
+             <button><%=page_title%> </button>
+            </div>

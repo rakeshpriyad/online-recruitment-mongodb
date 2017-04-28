@@ -1,11 +1,27 @@
 <%- include layouts/header.ejs %>
 
         <div class="page-data">
-         <div class="data-btn">
-           <button onClick="addShedule();">+ Add Schedule</button>
-         </div>
-         <%- include schedule_info.ejs %>
+        
+		      <div class="search-info-btn">
+            <div class="data-btn">
+                <table border="0" width="100%">
+                  <tr>
+                    <td width="40%"><button onClick="addSchedule();">+ Add Schedule</button></td>
+                    <td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td width="10%">&nbsp;</td>
+                    <td width="50%" align="right">
+                    <form method="POST" action="/schedules/find">Schedule Name <input type="text" name="schedule_name" >  <input type="submit" value="Search"/> </form>
+                    </td>
+                  </tr>
+                </table>
+            </div>
+          </div>
          
+         
+         <%- include schedule_info.ejs %>
+         <%- include schedule_paginate.ejs %>
         
         </div>
         

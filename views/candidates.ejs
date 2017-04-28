@@ -1,11 +1,29 @@
 <%- include layouts/header.ejs %>
 
         <div class="page-data">
-         <div class="data-btn">
-           <button onClick="addCandidate();">+ Add Candidate</button><button onClick="cvUpload();">Upload CV</button>
-         </div>
-        
+        <div class="search-info-btn">
+                <div class="data-btn">
+                <table border="0" width="100%">
+                <tr>
+                    <td width="40%"><div class="data-btn"><button onClick="addCandidate();">+ Add Candidate</button><button onClick="cvUpload();">Upload CV</button> </div></td>
+                    
+                    
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    
+                    
+                    <td >&nbsp;</td>
+                    <td widtth="60%" align="right">
+                        <form method="POST" action="/candidates/find">Candidate Name <input type="text" name="candidate_name" >  <input type="submit" value="Search"/></form>
+                    </td>
+                </tr>
+                </table>
+                </div>
+        </div>  
+
          <%- include cand_info.ejs %>
+         <%- include candidate_paginate.ejs %>
+         
         
         </div>
         

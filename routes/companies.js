@@ -1,5 +1,8 @@
 
 
+var pageSize = 2,
+	pageCount = 10/2,
+	currentPage = 1	;
 
 function getCompanyProvider(){
 	var mongoServer = 'localhost';
@@ -14,19 +17,21 @@ var companyProvider =  getCompanyProvider();
  * GET companies listing.
  */
 exports.list = function(req, res){
-	//var compdata;
-	//var candidatedata;
-	companyProvider.fetchAllCompanies(function(error, companies) {
+	var currentPage = req.params.page;
+		  if ( typeof currentPage == 'undefined' )  {
+				currentPage =1;
+			}
+
+			var totalCompanies = 0;
+	companyProvider.fetchTotalCompanies(function(error, companies) {
+		totalCompanies = companies.length;
+    });
+	companyProvider.fetchAllCompanies(currentPage,function(error, companies) {
+			//res.render('companies',{page_title:"Companies ",data:companies});
 			
-			//companyProvider.fetchAllCandidates(function(error, candiates) {
-			res.render('companies',{page_title:"Companies ",data:companies});
-			//res.send(candiates);
-			//});
+			pageCount = Math.floor(totalCompanies/pageSize);
+			res.render('companies',{page_title:"Company Information ",data:companies,pageSize: pageSize,	totalCompanies: totalCompanies,pageCount: pageCount,currentPage: currentPage});
 	});
-
-	
-	//renderMain(res,compdata,candidatedata);
-
 };
 
 
@@ -40,6 +45,36 @@ exports.get = function(req, res){
 			}
 		});
 	};
+exports.find = function(req, res){
+		var input = JSON.parse(JSON.stringify(req.body));
+		
+		console.log(req.body);
+		console.log(req.params.page);
+		var search_param = input.company_name;
+		var currentPage = req.params.page;
+		if ( typeof currentPage == 'undefined' )  {
+			currentPage =1;
+		}
+		if(req.params.company_name){
+				search_param = req.params.company_name;
+		}
+			companyProvider.fetchCompanyByName(search_param,currentPage, function(error, companies) {
+				if (companies == null) {
+					res.send(error, 404);
+				} else {
+					//res.send(companies);
+					var totalCompanies = 0;
+					companyProvider.fetchTotalCompanies(function(error, companies) {
+						totalCompanies = companies.length;
+					});
+					 totalCompanies = companies.length;
+					pageCount = Math.floor(totalCompanies/pageSize);
+					res.render('companies',{page_title:"Company Information",data:companies,comp_name:search_param,pageSize: pageSize,	totalCompanies: totalCompanies,pageCount: pageCount,currentPage: currentPage});
+				}
+			});
+
+};
+
 
 exports.add = function(req, res){
   res.render('add_company',{page_title:"Add Companies "});

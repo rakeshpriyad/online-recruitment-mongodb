@@ -3,7 +3,9 @@
 //const expressFileUpload = require('express-fileupload');
 //var fileUpload = expressFileUpload();
 var formidable = require('formidable');
-
+var pageSize = 2,
+	pageCount = 10/2,
+	currentPage = 1	;
 
 function getCandidateProvider(){
 	var mongoServer = 'localhost';
@@ -18,10 +20,16 @@ var candidateProvider =  getCandidateProvider();
  * GET candidates listing.
  */
 exports.list = function(req, res){
-		candidateProvider.fetchAllCandidates(function(error, candiates) {
-			res.render('candidates',{page_title:"candidates ",candidates_data:candiates});
+		var currentPage = req.params.page;
+		  if ( typeof currentPage == 'undefined' )  {
+				currentPage =1;
+			}
+		candidateProvider.fetchAllCandidates(currentPage, function(error, candiates) {
+			var totalCandidates = candiates.length;
+			pageCount = totalCandidates/pageSize;
+			res.render('candidates',{page_title:"Candidate Information ",candidates_data:candiates,pageSize: pageSize,	totalCandidates: totalCandidates,pageCount: pageCount,currentPage: currentPage});
        		//res.send(candiates);
-			
+
 			});
 };
 
@@ -35,6 +43,32 @@ exports.get = function(req, res){
 			}
 		});
 	};
+
+exports.find = function(req, res){
+		var input = JSON.parse(JSON.stringify(req.body));
+		
+		console.log(req.body);
+		console.log(req.params.page);
+		var search_param = input.candidate_name;
+		var currentPage = req.params.page;
+		if ( typeof currentPage == 'undefined' )  {
+			currentPage =1;
+		}
+		if(req.params.candidate_name){
+				search_param = req.params.candidate_name;
+		}
+			candidateProvider.fetchCandidateByName(search_param,currentPage, function(error, candiates) {
+				if (candiates == null) {
+					res.send(error, 404);
+				} else {
+					//res.send(candidates);
+					var totalCandidates = candiates.length;
+					pageCount = totalCandidates/pageSize;
+					res.render('candidates',{page_title:"Candidate Information",candidates_data:candiates,cand_name:search_param,pageSize: pageSize,	totalCandidates: totalCandidates,pageCount: pageCount,currentPage: currentPage});
+				}
+			});
+
+		};
 
 exports.add = function(req, res){
   res.render('add_candidate',{page_title:"Add Candidates "});
@@ -75,8 +109,8 @@ exports.save_edit = function(req,res){
             phone   		  : input.phone
 
         };
-    console.log("Update Updating : %s ",id);
-		console.log("Update Updating : %s ",input.candidate_name);
+    console.log("Update : %s ",id);
+	console.log("Update  : %s ",input.candidate_name);
 
 			candidateProvider.updateCandidate(candidates, function(error, cs) {
 				console.log("Error Updating : %s ",req.body );
@@ -122,10 +156,9 @@ exports.cv_upload = function(req, res){
         console.log('Uploaded ' + file.name);
     });
 
-	
+
     //res.sendfile('./public/upload_cv.html');
 	//res.status(200).redirect('/candidates',{code: 'success', message:'Valid'});
 	//res.status(200).send({code: 'success', message:'Uploaded'});
-	res.render('upload_cv',{page_title:"candidates File Upload ",message:'Uploaded'});
+	res.render('upload_cv',{page_title:"Candidates File Upload ",message:'Uploaded'});
 };
-

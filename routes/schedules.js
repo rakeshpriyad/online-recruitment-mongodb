@@ -1,6 +1,9 @@
 
 
-
+var pageSize = 3,
+	pageCount = 10/2,
+	currentPage = 1	;
+	
 function getScheduleProvider(){
 	var mongoServer = 'localhost';
 	var mongoPort = 27017;
@@ -14,8 +17,22 @@ var scheduleProvider =  getScheduleProvider();
  * GET schedules listing.
  */
 exports.list = function(req, res){
-	scheduleProvider.fetchAllSchedules(function(error, schedules) {
-			res.render('schedules',{page_title:"Schedules ",data:schedules});
+	var currentPage = req.params.page;
+		  if ( typeof currentPage == 'undefined' )  {
+				currentPage =1;
+			}
+	var totalSchedules=0;
+	
+	
+	scheduleProvider.fetchTotalSchedules(function(error, schedules) {
+		totalSchedules = schedules.length;
+	});
+	scheduleProvider.fetchAllSchedules(currentPage,function(error, schedules) {
+			//res.render('schedules',{page_title:"Schedules ",data:schedules});
+			 
+			pageCount = Math.floor((totalSchedules/pageSize));
+					
+			res.render('schedules',{page_title:"Schedule Information ",data:schedules,pageSize : pageSize, totalSchedules : totalSchedules,pageCount: pageCount,currentPage: currentPage});
 	});
 };
 
@@ -30,6 +47,34 @@ exports.get = function(req, res){
 			}
 		});
 	};
+exports.find = function(req, res){
+		var input = JSON.parse(JSON.stringify(req.body));
+		
+		console.log(req.body);
+		console.log(req.params.page);
+		var search_param = input.schedule_name;
+		var currentPage = req.params.page;
+		if ( typeof currentPage == 'undefined' )  {
+			currentPage =1;
+		}
+		if(req.params.schedule_name){
+				search_param = req.params.schedule_name;
+		}
+		scheduleProvider.fetchTotalSchedules(function(error, schedules) {
+			totalSchedules = schedules.length;
+		});
+			scheduleProvider.fetchScheduleByName(search_param,currentPage, function(error, schedules) {
+				if (schedules == null) {
+					res.send(error, 404);
+				} else {
+					//res.send(schedules);
+					var totalSchedules = schedules.length;
+					pageCount = parseInt(totalSchedules)/parseInt(pageSize);
+					res.render('schedules',{page_title:"Company Information",data:schedules,shed_name:search_param,pageSize: pageSize,	totalSchedules: totalSchedules,pageCount: pageCount,currentPage: currentPage});
+				}
+			});
+
+};
 
 exports.add = function(req, res){
   res.render('add_schedule',{page_title:"Add Schedules "});
@@ -66,7 +111,7 @@ exports.save_edit = function(req,res){
             _id     		 : id,
             schedule_name    : input.schedule_name,
             address 		 : input.address,
-            company_name     : input.company_name,
+            schedule_name     : input.schedule_name,
             candidate_name   : input.candidate_name,
 			contact_person   : input.contact_person
 

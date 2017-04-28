@@ -33,29 +33,7 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-//var fileUpload = require('express-fileupload');
-/*var formidable = require('formidable');
 
-app.get('/candidates/upload', function (req, res){
-    res.sendfile('./public/upload_cv.html');
-});
-
-app.post('/candidates/upload', function (req, res){
-    var form = new formidable.IncomingForm();
-
-    form.parse(req);
-
-    form.on('fileBegin', function (name, file){
-        file.path = __dirname + '/uploads/' + file.name;
-    });
-
-    form.on('file', function (name, file){
-        console.log('Uploaded ' + file.name);
-    });
-
-    res.sendfile('./public/upload_cv.html');
-});
-*
 
 
 /*------------------------------------------
@@ -70,30 +48,45 @@ app.post('/candidates/upload', function (req, res){
 app.get('/', routes.index);
 
 app.get('/companies/get/:id', companies.get);
+app.get('/companies/:page', companies.list);
 app.get('/companies', companies.list);
+app.post('/companies/find', companies.find);
+app.get('/companies/find/:page/:company_name', companies.find);
+
+
 app.get('/companies/add', companies.add);
 app.post('/companies/add', companies.save);
 app.get('/companies/delete/:id', companies.delete_company);
 app.get('/companies/edit/:id', companies.edit);
 app.post('/companies/edit/:id',companies.save_edit);
 
+
 app.get('/candidates/add', candidates.add);
 app.post('/candidates/add', candidates.save);
 app.get('/candidates/edit/:id', candidates.edit);
 app.get('/candidates/get/:id', candidates.get);
 app.get('/candidates', candidates.list);
+app.get('/candidates/:page', candidates.list);
 app.post('/candidates/edit/:id',candidates.save_edit);
 app.get('/candidates/delete/:id', candidates.delete_candidate);
 app.get('/candidates/upload', candidates.upload);
 app.post('/candidates/upload', candidates.cv_upload);
+//app.get('/candidates/find', candidates.find);
+app.post('/candidates/find', candidates.find);
+app.post('/candidates/find/', candidates.find);
+app.get('/candidates/find/:page/:candidate_name', candidates.find);
 
-app.get('/schedules', schedules.list);
+
 app.get('/schedules/add', schedules.add);
 app.post('/schedules/add', schedules.save);
 app.get('/schedules/edit/:id', schedules.edit);
 
 
+app.get('/schedules', schedules.list);
+app.get('/schedules/:page', schedules.list);
 
+app.post('/schedules/find', schedules.find);
+app.get('/schedules/find/:page/:schedule_name', schedules.find);
 
 
 app.use(app.router);
