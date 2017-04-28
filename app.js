@@ -87,6 +87,11 @@ app.get('/schedules/:page', schedules.list);
 
 app.post('/schedules/find', schedules.find);
 app.get('/schedules/find/:page/:schedule_name', schedules.find);
+var clientDir = path.join(__dirname, 'ng-module')
+
+app.get('/test', function(req, res) {
+  res.sendfile(path.join(clientDir, 'test.html'))
+})
 
 
 app.use(app.router);
